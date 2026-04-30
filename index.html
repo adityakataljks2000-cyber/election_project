@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELECTIO // Terminal — Election Process Guide</title>
+  <meta name="description" content="A hacker-style terminal interface to explore the election process interactively." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+
+  <!-- SVG Filters for Extreme Effects -->
+  <svg style="display: none;">
+    <defs>
+      <filter id="liquid">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="liquid" />
+        <feComposite in="SourceGraphic" in2="liquid" operator="atop" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- God Mode Startup Sequence -->
+  <div id="startup-overlay">
+    <div class="startup-content">
+      <div class="startup-logo">⚡ ELECTIO</div>
+      <div class="startup-bar"><div class="startup-fill"></div></div>
+      <div class="startup-text">INITIALIZING QUANTUM ENCRYPTION...</div>
+      <div class="startup-stats">
+        <span id="load-pct">0%</span> | <span id="load-status">BOOTING...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Matrix Rain Background -->
+  <canvas id="matrix-rain" aria-hidden="true"></canvas>
+
+  <!-- Floating Particles -->
+  <div id="particles" aria-hidden="true"></div>
+
+  <!-- Glitch Overlay -->
+  <div class="glitch-overlay" aria-hidden="true"></div>
+
+  <!-- Scanlines -->
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- Top Status Bar -->
+  <header class="status-bar" id="status-bar">
+    <div class="sb-left">
+      <span class="sb-dot red"></span>
+      <span class="sb-dot yellow"></span>
+      <span class="sb-dot green"></span>
+      <span class="sb-title">ELECTIO://TERMINAL v2.0</span>
+    </div>
+    <div class="sb-center" id="sb-clock"></div>
+    <div class="sb-right">
+      <span class="sb-status"><span class="blink">●</span> SYSTEM ONLINE</span>
+      <span class="sb-user">guest@electio</span>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="app-layout">
+
+    <!-- Left Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-ascii">⚡</div>
+        <span>ELECTIO</span>
+      </div>
+      <ul class="sidebar-menu">
+        <li><button class="sidebar-btn active" data-panel="dashboard" id="nav-dashboard"><span class="sb-ico">◈</span> DASHBOARD</button></li>
+        <li><button class="sidebar-btn" data-panel="process" id="nav-process"><span class="sb-ico">▶</span> PROCESS</button></li>
+        <li><button class="sidebar-btn" data-panel="database" id="nav-database"><span class="sb-ico">◉</span> DATABASE</button></li>
+        <li><button class="sidebar-btn" data-panel="terminal" id="nav-terminal"><span class="sb-ico">⌘</span> TERMINAL</button></li>
+        <li><button class="sidebar-btn" data-panel="quiz" id="nav-quiz"><span class="sb-ico">✦</span> QUIZ</button></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="sys-info">CPU: <span class="red-text">89%</span></div>
+        <div class="sys-info">MEM: <span class="red-text">2.4GB</span></div>
+        <div class="sys-info">UPT: <span id="uptime">00:00</span></div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+
+      <!-- PANEL: Dashboard -->
+      <section class="panel active" id="panel-dashboard">
+        <div class="panel-header">
+          <h1>SYSTEM <span class="red-text">DASHBOARD</span></h1>
+          <p class="panel-sub">> Welcome to the Election Process Intelligence System</p>
+        </div>
+        <div class="ascii-art" id="ascii-banner"></div>
+        <div class="dash-grid">
+          <div class="dash-card" id="dc-stages">
+            <div class="dc-num" data-count="7">0</div>
+            <div class="dc-label">ELECTION STAGES</div>
+            <div class="dc-bar"><div class="dc-fill" style="width:100%"></div></div>
+          </div>
+          <div class="dash-card" id="dc-topics">
+            <div class="dc-num" data-count="7">0</div>
+            <div class="dc-label">TOPIC MODULES</div>
+            <div class="dc-bar"><div class="dc-fill" style="width:85%"></div></div>
+          </div>
+          <div class="dash-card" id="dc-faqs">
+            <div class="dc-num" data-count="50">0</div>
+            <div class="dc-label">FAQ ENTRIES</div>
+            <div class="dc-bar"><div class="dc-fill" style="width:70%"></div></div>
+          </div>
+          <div class="dash-card" id="dc-access">
+            <div class="dc-num" data-count="100">0</div>
+            <div class="dc-label">ACCESS LEVEL %</div>
+            <div class="dc-bar"><div class="dc-fill" style="width:100%"></div></div>
+          </div>
+        </div>
+        <div class="quick-access">
+          <h2>> QUICK ACCESS_</h2>
+          <div class="qa-grid">
+            <button class="qa-btn" data-goto="process">▶ EXPLORE PROCESS</button>
+            <button class="qa-btn" data-goto="database">◉ TOPIC DATABASE</button>
+            <button class="qa-btn" data-goto="terminal">⌘ ASK TERMINAL</button>
+            <button class="qa-btn" data-goto="quiz">✦ TAKE QUIZ</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL: Process (Timeline) -->
+      <section class="panel" id="panel-process">
+        <div class="panel-header">
+          <h1>ELECTION <span class="red-text">PROCESS</span></h1>
+          <p class="panel-sub">> Step-by-step election lifecycle // Use arrows or click to navigate</p>
+        </div>
+        <div class="process-viewer">
+          <div class="pv-nav">
+            <button class="pv-arrow" id="pv-prev">◄</button>
+            <span class="pv-counter"><span id="pv-current">1</span> / <span id="pv-total">7</span></span>
+            <button class="pv-arrow" id="pv-next">►</button>
+          </div>
+          <div class="pv-card" id="pv-card">
+            <div class="pv-step-badge" id="pv-badge">STEP 01</div>
+            <h3 id="pv-title"></h3>
+            <div class="pv-time" id="pv-time"></div>
+            <p id="pv-desc"></p>
+          </div>
+          <div class="pv-progress">
+            <div class="pv-dots" id="pv-dots"></div>
+            <div class="pv-track"><div class="pv-fill" id="pv-fill"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL: Database (Topics) -->
+      <section class="panel" id="panel-database">
+        <div class="panel-header">
+          <h1>TOPIC <span class="red-text">DATABASE</span></h1>
+          <p class="panel-sub">> Select a module to decrypt its contents</p>
+        </div>
+        <div class="db-layout">
+          <div class="db-list" id="db-list"></div>
+          <div class="db-detail" id="db-detail">
+            <div class="db-placeholder">
+              <span class="big-ico">◉</span>
+              <p>SELECT A MODULE FROM THE LIST</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL: Terminal (Chat) -->
+      <section class="panel" id="panel-terminal">
+        <div class="panel-header">
+          <h1>INTERACTIVE <span class="red-text">TERMINAL</span></h1>
+          <p class="panel-sub">> Type your query below // Natural language supported</p>
+        </div>
+        <div class="term-box" id="term-box">
+          <div class="term-output" id="term-output">
+            <div class="term-line sys">╔══════════════════════════════════════════════════╗</div>
+            <div class="term-line sys">║  ELECTIO TERMINAL v2.0 — Election Guide System  ║</div>
+            <div class="term-line sys">╚══════════════════════════════════════════════════╝</div>
+            <div class="term-line sys">> System initialized. Type a question or use a command.</div>
+            <div class="term-line sys">> Try: "register", "nomination", "voting", "counting", "results"</div>
+            <div class="term-line sys">───────────────────────────────────────────────────</div>
+          </div>
+          <div class="term-chips" id="term-chips">
+            <button class="t-chip" data-q="How do I register to vote?">register</button>
+            <button class="t-chip" data-q="How are candidates nominated?">nomination</button>
+            <button class="t-chip" data-q="What happens on election day?">voting</button>
+            <button class="t-chip" data-q="How are votes counted?">counting</button>
+            <button class="t-chip" data-q="What is the role of the Election Commission?">commission</button>
+            <button class="t-chip" data-q="What is NOTA?">nota</button>
+          </div>
+          <form class="term-input" id="term-form">
+            <span class="term-prompt">guest@electio:~$</span>
+            <input type="text" id="term-cmd" placeholder="enter query..." autocomplete="off" />
+            <button type="submit" class="term-send">EXEC</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- PANEL: Quiz -->
+      <section class="panel" id="panel-quiz">
+        <div class="panel-header">
+          <h1>KNOWLEDGE <span class="red-text">QUIZ</span></h1>
+          <p class="panel-sub">> Test your election knowledge // <span id="quiz-score-display">Score: 0/0</span></p>
+        </div>
+        <div class="quiz-box" id="quiz-box">
+          <div class="quiz-card" id="quiz-card">
+            <div class="quiz-num" id="quiz-num">Q.01</div>
+            <h3 id="quiz-question"></h3>
+            <div class="quiz-options" id="quiz-options"></div>
+            <div class="quiz-feedback" id="quiz-feedback"></div>
+          </div>
+          <div class="quiz-nav">
+            <button class="btn-quiz" id="quiz-next">NEXT QUESTION ►</button>
+            <button class="btn-quiz" id="quiz-restart" style="display:none;">↻ RESTART QUIZ</button>
+          </div>
+          <div class="quiz-progress">
+            <div class="qp-track"><div class="qp-fill" id="qp-fill"></div></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
