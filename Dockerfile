@@ -1,11 +1,9 @@
-# Use Nginx to serve the static content
 FROM nginx:alpine
 
-# Copy the static files to the Nginx html directory
 COPY . /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 80
+RUN sed -i 's/listen       80;/listen 8080;/g' /etc/nginx/conf.d/default.conf
 
-# Start Nginx
+EXPOSE 8080
+
 CMD ["nginx", "-g", "daemon off;"]
