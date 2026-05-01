@@ -305,6 +305,7 @@ let mouseX = 0, mouseY = 0;
 
 // ===== GOD MODE LOGIC =====
 function initGodMode() {
+  document.documentElement.classList.add('js-active');
   initStartupSequence();
   initCustomCursor();
   initCardGlows();
@@ -345,6 +346,7 @@ function initStartupSequence() {
 function initCustomCursor() {
   const cursor = document.createElement('div');
   cursor.id = 'custom-cursor';
+  cursor.classList.add('active');
   cursor.innerHTML = '<div class="dot"></div>';
   document.body.appendChild(cursor);
 
